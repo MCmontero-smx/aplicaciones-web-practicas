@@ -25,3 +25,10 @@ Para centrar un elemento se usa la prioridad `text-align`.
 ```html
 <h1>hola mundo</h1>
 ```
+>Esto es una cita o una nota destacada.
+
+| Practica  |   Fecha  |    Estado  |
+|-----------|----------|------------|
+|Practica 1 |10/09/2026| Terminada  |
+|Practica 2 |17/09/2026| En progreso|
+---

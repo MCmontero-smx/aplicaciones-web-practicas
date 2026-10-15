@@ -149,7 +149,7 @@ echo "<h1>Bienvenido a SITIO 2</h1>" | sudo tee /var/www/sitio2/index.html
 ```
 **Captura**
 
-![Captura del contenido del /etc/apache2/.](Imagenes/Imagen13.png)
+![Captura del contenido del /etc/apache2/.](Imagenes/imagen13.png)
 
 **Pregunta**
 Los VirtualHosts basados en nombre distinguen los sitios por el dominio; los basados en IP, por la dirección IP. En este caso usé uno basado en IP (192.168.56.12).
@@ -159,7 +159,7 @@ Los VirtualHosts basados en nombre distinguen los sitios por el dominio; los bas
 
 Cambiamos a los permisos correspondientes como en la captura.
 
-![Captura del contenido del /etc/apache2/.](Imagenes/Imagen12.png)
+![Captura del contenido del /etc/apache2/.](Imagenes/imagen12.png)
 
 Y ahora quitamos los permisos del sitio1 para ver el error 403
 

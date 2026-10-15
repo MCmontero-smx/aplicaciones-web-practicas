@@ -78,3 +78,27 @@ Para poder activar o desactivar sitios, módulos y configuraciones fácilmente, 
 
 ## Apartado 6. Modificaciones típicas del servicio
 
+## Apartado 7. Módulos de Apache
+| Módulo | Función |
+|---|---|
+| `mod_rewrite` | Reescritura de URL |
+| `mod_headers` | Manipulación de cabeceras HTTP |
+| `mod_ssl` | Soporte HTTPS |
+| `mod_dir` | Gestión de ficheros índice (`index.html`) |
+| `mod_alias` | Redirecciones y alias de rutas |
+| `mod_auth_basic` | Autenticación básica |
+| `mod_status` | Página de estado del servidor |
+| `mod_php` / PHP-FPM | Ejecución de PHP (opcional) |
+
+**Pregunta**
+Apache puede mostrar un error de configuración o dejar de funcionar correctamente porque el módulo dependiente necesita el módulo desactivado.
+
+------------------------
+ ## Apartado 8. Varios sitios en un mismo servidor
+
+En la imagen 11 se ve cómo creé dos directorios para alojar los sitios web y añadí una página de inicio a cada uno:
+```Apache
+sudo mkdir -p /var/www/sitio1 /var/www/sitio2
+echo "<h1>Bienvenido a SITIO 1</h1>" | sudo tee /var/www/sitio1/index.html
+echo "<h1>Bienvenido a SITIO 2</h1>" | sudo tee /var/www/sitio2/index.html
+```

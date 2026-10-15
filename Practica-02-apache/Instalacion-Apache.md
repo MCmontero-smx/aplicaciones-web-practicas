@@ -102,3 +102,4 @@ sudo mkdir -p /var/www/sitio1 /var/www/sitio2
 echo "<h1>Bienvenido a SITIO 1</h1>" | sudo tee /var/www/sitio1/index.html
 echo "<h1>Bienvenido a SITIO 2</h1>" | sudo tee /var/www/sitio2/index.html
 ```
+

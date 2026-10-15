@@ -78,7 +78,17 @@ Para poder activar o desactivar sitios, módulos y configuraciones fácilmente, 
 
 ## Apartado 6. Modificaciones típicas del servicio
 
+En este apartado he configurado Apache para que escuche en el puerto `8080`, he creado los directorios de dos sitios web y he comprobado que el servidor responde.
+
+### 6.1. Configurar Apache para escuchar en el puerto 8080
+
+Primero he editado el archivo `/etc/apache2/ports.conf` para añadir el puerto `8080`:
+
+```apache
+Listen 8080
+
 ## Apartado 7. Módulos de Apache
+
 | Módulo | Función |
 |---|---|
 | `mod_rewrite` | Reescritura de URL |
@@ -113,7 +123,9 @@ Los VirtualHosts basados en nombre distinguen los sitios por el dominio; los bas
 ## Apartado 9. Permisos y propietarios
 
 Cambiamos a los permisos correspondientes como en la captura.
+
 ![Captura del contenido del /etc/apache2/.](Imagenes/Imagen12.png)
 
 Y ahora quitamos los permisos del sitio1 para ver el error 403
+
 ![Captura del contenido del /etc/apache2/.](Imagenes/ultima.png)

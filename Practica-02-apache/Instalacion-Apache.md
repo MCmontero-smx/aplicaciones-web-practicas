@@ -102,4 +102,18 @@ sudo mkdir -p /var/www/sitio1 /var/www/sitio2
 echo "<h1>Bienvenido a SITIO 1</h1>" | sudo tee /var/www/sitio1/index.html
 echo "<h1>Bienvenido a SITIO 2</h1>" | sudo tee /var/www/sitio2/index.html
 ```
+**Captura**
 
+![Captura del contenido del /etc/apache2/.](Imagenes/Imagen13.png)
+
+**Pregunta**
+Los VirtualHosts basados en nombre distinguen los sitios por el dominio; los basados en IP, por la dirección IP. En este caso usé uno basado en IP (192.168.56.12).
+------------------
+
+## Apartado 9. Permisos y propietarios
+
+Cambiamos a los permisos correspondientes como en la captura.
+![Captura del contenido del /etc/apache2/.](Imagenes/Imagen12.png)
+
+Y ahora quitamos los permisos del sitio1 para ver el error 403
+![Captura del contenido del /etc/apache2/.](Imagenes/ultima.png)

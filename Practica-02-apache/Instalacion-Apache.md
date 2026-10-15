@@ -87,7 +87,7 @@ Primero he editado el archivo `/etc/apache2/ports.conf` para añadir el puerto `
 ```apache
 Listen 8080
 ````
-![Captura del contenido del /etc/apache2/.](Imagenes/Imagen7.png)
+![Captura del contenido del /etc/apache2/.](Imagenes/imagen7.png)
 
 A continuación, he editado la configuración del sitio predeterminado para que su VirtualHost use ese puerto:
 ```Apache
@@ -121,6 +121,7 @@ ErrorDocument 404 /error4004.html
 ```
 ![Captura del contenido del /etc/apache2/.](imagenes/imagen101.png)
 
+------------------------
 ## Apartado 7. Módulos de Apache
 
 | Módulo | Función |

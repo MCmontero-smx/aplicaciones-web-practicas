@@ -111,12 +111,15 @@ En la parte inferior del archivo  se encuentra el cambio de correo algo como asi
 ```Apache
 ServerAdmin correo@admin.com
 ```
+![Captura del contenido del /etc/apache2/.](imagenes/imagen102.png)
 
 ### 6.5. Personalizar una página de error 
 En la parte superio del archivo se encuetra personalizado el error 404 el cambio como algo asi:
 ```Apache
 ErrorDocument 404 /error4004.html
 ```
+![Captura del contenido del /etc/apache2/.](imagenes/imagen101.png)
+
 ## Apartado 7. Módulos de Apache
 
 | Módulo | Función |

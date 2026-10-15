@@ -94,7 +94,7 @@ A continuación, he editado la configuración del sitio predeterminado para que 
 <VirtualHost *:8080>
 ```
 
-![Captura del contenido del /etc/apache2/.](Imagenes/Imagen6.png)
+![Captura del contenido del /etc/apache2/.](Imagenes/imagen6.png)
 ### 6.3. Configurar el nombre del servidor
 
 Para definir el nombre del servidor y evitar el aviso de Apache sobre el nombre de dominio completo, he creado el archivo servername.conf con la directiva ServerName localhost. Después, he habilitado la configuración y he recargado Apache:
@@ -104,6 +104,19 @@ sudo a2enconf servername
 sudo systemctl reload apache2
 ```
 
+![Captura del contenido del /etc/apache2/.](imagenes/imagen9.png)
+
+### 6.4. Cambiar el correo del administrador 
+En la parte inferior del archivo  se encuentra el cambio de correo algo como asi:
+```Apache
+ServerAdmin correo@admin.com
+```
+
+### 6.5. Personalizar una página de error 
+En la parte superio del archivo se encuetra personalizado el error 404 el cambio como algo asi:
+```Apache
+ErrorDocument 404 /error4004.html
+```
 ## Apartado 7. Módulos de Apache
 
 | Módulo | Función |

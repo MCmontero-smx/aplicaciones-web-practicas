@@ -95,6 +95,7 @@ A continuación, he editado la configuración del sitio predeterminado para que 
 ```
 
 ![Captura del contenido del /etc/apache2/.](Imagenes/imagen6.png)
+
 ### 6.3. Configurar el nombre del servidor
 
 Para definir el nombre del servidor y evitar el aviso de Apache sobre el nombre de dominio completo, he creado el archivo servername.conf con la directiva ServerName localhost. Después, he habilitado la configuración y he recargado Apache:

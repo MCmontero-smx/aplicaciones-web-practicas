@@ -87,6 +87,23 @@ Primero he editado el archivo `/etc/apache2/ports.conf` para añadir el puerto `
 ```apache
 Listen 8080
 ````
+![Captura del contenido del /etc/apache2/.](Imagenes/Imagen7.png)
+
+A continuación, he editado la configuración del sitio predeterminado para que su VirtualHost use ese puerto:
+```Apache
+<VirtualHost *:8080>
+```
+
+![Captura del contenido del /etc/apache2/.](Imagenes/Imagen6.png)
+### 6.3. Configurar el nombre del servidor
+
+Para definir el nombre del servidor y evitar el aviso de Apache sobre el nombre de dominio completo, he creado el archivo servername.conf con la directiva ServerName localhost. Después, he habilitado la configuración y he recargado Apache:
+```Apache
+echo "ServerName localhost" | sudo tee /etc/apache2/conf-available/servername.conf
+sudo a2enconf servername
+sudo systemctl reload apache2
+```
+
 ## Apartado 7. Módulos de Apache
 
 | Módulo | Función |

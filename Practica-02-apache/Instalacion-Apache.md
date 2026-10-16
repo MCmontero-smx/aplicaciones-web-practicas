@@ -164,3 +164,12 @@ Cambiamos a los permisos correspondientes como en la captura.
 Y ahora quitamos los permisos del sitio1 para ver el error 403
 
 ![Captura del contenido del /etc/apache2/.](Imagenes/ultima.png)
+
+----------------------------------------
+## Concluision
+
+En esta práctica he aprendido a instalar, configurar y administrar Apache en Ubuntu 24.04. También he practicado el uso de comandos, la activación de módulos, la creación de Virtual Hosts y la gestión de permisos para mejorar la seguridad del servidor web.
+
+## Problemas encontrados
+
+Durante la práctica pueden aparecer errores de configuración, problemas al iniciar Apache o fallos al acceder a las páginas web. Para solucionarlos, he utilizado comandos como `apache2ctl configtest` para comprobar la configuración y he revisado el estado del servicio y los registros de errores.

@@ -32,7 +32,7 @@ Imagen del status de apache2
 **Apache**: permite el tráfico básico necesario para que funcione el servidor web.
 
 **Apache Full**: permite todo el tráfico de Apache, incluyendo conexiones HTTP y HTTPS.
-
+ServerAdmin correo@admin.com
 **Apache Secure**: permite únicamente el tráfico HTTPS, que está cifrado y es más seguro.
 ## Apartado 4. Comandos principales de administración
 

@@ -2,3 +2,5 @@
 
 
 ## Instalacion MariaDB
+
+### Apartado 1. Preparacion del sistema

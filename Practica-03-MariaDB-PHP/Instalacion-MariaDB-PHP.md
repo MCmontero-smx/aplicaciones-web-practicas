@@ -145,14 +145,7 @@ php -v
 
 **Explicación:** Esta última comprobación confirma que los servicios web y de base de datos están activos y que PHP está instalado. Con estas piezas, el servidor queda preparado para continuar con la instalación de WordPress.
 
-**Estado final del servidor:**
 
-| Componente | Programa | Estado |
-| --- | --- | --- |
-| Sistema operativo | Ubuntu 24.04 | Instalado |
-| Servidor web | Apache 2 | [Completar según el resultado] |
-| Base de datos | MariaDB | [Completar versión y estado] |
-| Lenguaje | PHP | [Completar versión y estado] |
 
 ![Captura de la instalacion de maridb.](imagenes/imagen6.png)
 

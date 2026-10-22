@@ -17,7 +17,7 @@ systemctl is-active apache2
 
 **Explicación:** `a2ensite` habilita el sitio predeterminado de Apache. La recarga aplica el cambio sin apagar el servicio. `apt update` actualiza el índice de paquetes y `apt upgrade` instala las actualizaciones disponibles. Por último, `systemctl is-active` permite comprobar si Apache está funcionando.
 
-**Captura:** `img/01-apache-activo.png` — respuesta de `systemctl is-active apache2`.
+![Captura de la instalacion de maridb.](imagenes/imagen1.png)
 
 ## 2. Instalación de MariaDB
 
@@ -30,7 +30,7 @@ mariadb --version
 
 **Explicación:** `mariadb-server` instala el servicio que almacena y gestiona bases de datos. El comando `mariadb --version` muestra la versión instalada. El número exacto puede variar según las actualizaciones disponibles en Ubuntu.
 
-**Captura:** `img/02-version-mariadb.png` — salida de `mariadb --version`.
+![Captura de la instalacion de maridb.](imagenes/imagen2.png).
 
 ## 3. Comprobación del funcionamiento
 
@@ -57,7 +57,7 @@ exit
 
 **Explicación:** Entré al monitor de MariaDB con permisos de administrador para confirmar que el servidor acepta conexiones. Después salí sin modificar datos.
 
-**Captura:** `img/03-estado-y-acceso-mariadb.png` — estado del servicio y prompt de MariaDB.
+![Captura de la instalacion de maridb.](imagenes/imagen3.png)
 
 ## 4. Comandos principales del servicio
 
@@ -87,7 +87,7 @@ El error puede ser parecido a `Can't connect to local server through socket ...`
 
 **Respuesta a la pregunta:** Para saber si MariaDB está parado usaría `systemctl is-active mariadb`. Para intentar conectarme y confirmar el fallo de acceso usaría `sudo mariadb`. Si el estado devuelve `inactive` y la conexión falla, iniciaría el servicio con `sudo systemctl start mariadb`.
 
-**Captura:** `img/04-error-y-recuperacion.png` — estado/error mientras está detenido y comprobación tras iniciarlo.
+![Captura de la instalacion de maridb.](imagenes/imagen4.png)
 
 ## 6. Instalación de PHP
 
@@ -125,7 +125,7 @@ echo '<?php phpinfo();' | sudo tee /var/www/html/info.php
 
 Abrí `http://IP_DE_TU_SERVIDOR/info.php` en el navegador y comprobé que aparecía la página de información de PHP.
 
-**Captura:** `img/05-php-terminal-y-navegador.png` — `php -v`, módulos PHP y página `info.php`.
+![Captura de la instalacion de maridb.](imagenes/imagen5.png)
 
 Después eliminé el archivo de diagnóstico y comprobé el contenido del directorio:
 
@@ -133,8 +133,6 @@ Después eliminé el archivo de diagnóstico y comprobé el contenido del direct
 sudo rm /var/www/html/info.php
 ls /var/www/html
 ```
-
-**Resultado obtenido:** [Confirma que `info.php` ya no aparece.]
 
 **Respuesta a las preguntas:** Dejar `info.php` publicado es peligroso porque revela detalles del servidor, la versión de PHP, módulos y configuración que podrían ayudar a un atacante a buscar vulnerabilidades. `php-mysql` instala la conexión que necesita PHP para consultar y modificar bases de datos MariaDB/MySQL; WordPress la necesita para acceder a sus entradas, usuarios y configuración.
 
@@ -156,7 +154,7 @@ php -v
 | Base de datos | MariaDB | [Completar versión y estado] |
 | Lenguaje | PHP | [Completar versión y estado] |
 
-**Captura:** [Si guardaste una captura de la comprobación final, añádela como `img/06-comprobacion-final.png`.]
+![Captura de la instalacion de maridb.](imagenes/imagen6.png)
 
 ## Conclusiones
 

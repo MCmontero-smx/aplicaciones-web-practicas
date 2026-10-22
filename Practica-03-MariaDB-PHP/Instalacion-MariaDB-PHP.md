@@ -123,7 +123,7 @@ Creé temporalmente una página de diagnóstico para comprobar que Apache ejecut
 echo '<?php phpinfo();' | sudo tee /var/www/html/info.php
 ```
 
-Abrí `http://IP_DE_TU_SERVIDOR/info.php` en el navegador y comprobé que aparecía la página de información de PHP.
+Abrí `http://192.168.56.12/info.php` en el navegador y comprobé que aparecía la página de información de PHP.
 
 ![Captura de la instalacion de maridb.](imagenes/imagen5.png)
 

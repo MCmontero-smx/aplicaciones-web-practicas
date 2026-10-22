@@ -125,7 +125,9 @@ echo '<?php phpinfo();' | sudo tee /var/www/html/info.php
 
 Abrí `http://IP_DE_TU_SERVIDOR/info.php` en el navegador y comprobé que aparecía la página de información de PHP.
 
+
 ![Captura de la instalacion de maridb.](imagenes/imagen4.png)
+
 
 Después eliminé el archivo de diagnóstico y comprobé el contenido del directorio:
 

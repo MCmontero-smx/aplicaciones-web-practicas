@@ -24,7 +24,8 @@ php -v
 **Salida esperada (ejemplo orientativo; comprueba con tu captura):** `active` para ambos servicios y PHP `8.3.x`.
 
 
-📸 **Captura:** `img/01-ssh-servicios-php.png` — terminal con la conexión SSH y las comprobaciones.
+**Captura:** 
+![Captura de la instalacion de wordpress.](imagenes/imagen1.png)
 
 **Reflexión:** ¿Qué dos “puertas” (programas y puertos) usas para trabajar con el servidor en esta práctica y para qué sirve cada una?
 
@@ -61,7 +62,8 @@ grep DocumentRoot /etc/apache2/sites-enabled/000-default.conf
 
 
 
-📸 **Capturas:** `img/02-apache-sitio-activo.png` — comandos y salidas; `img/02-apache-navegador.png` — página obtenida desde el navegador.
+**Capturas:** 
+![Captura de la instalacion de wordpress.](imagenes/imagen2.png)
 
 **Reflexión:** ¿Qué diferencia hay entre desactivar un sitio con `a2dissite` y borrar sus ficheros? ¿Por qué ahora ves la página por defecto de Apache y antes veías sitio1?
 
@@ -99,8 +101,8 @@ Introduce la contraseña cuando se pida. Si aparece `MariaDB [wordpress]>`, la c
 - `GRANT ALL ON wordpress.* ...;` concede a ese usuario permisos sobre la base `wordpress`.
 
 
-📸 **Captura:** `img/03-mariadb-base-usuario.png` — creación y conexión con `wp_user`; comprueba que la contraseña no sea visible.
-
+**Captura:**
+![Captura de la instalacion de wordpress.](imagenes/imagen3.png)
 **Reflexión:** ¿Por qué crees que WordPress usa su propio usuario `wp_user` con permiso solo sobre su base y no el usuario `root` de MariaDB?
 
 **Respuesta:** Así WordPress trabaja con una cuenta dedicada y limitada a su propia base. No necesita acceso administrativo a todo MariaDB; si la aplicación tuviera un problema, sus permisos quedan acotados.
@@ -147,7 +149,8 @@ ls -ld /var/www/html
 `chown` asigna recursivamente los archivos al usuario y grupo de Apache, `www-data`. Los dos `find` aplican permisos `755` a directorios y `644` a ficheros. La última salida debe mostrar `www-data` como propietario y grupo.
 
 
-📸 **Captura:** `img/04-wordpress-ficheros-permisos.png` — contenido de WordPress y permisos del directorio.
+**Captura:** 
+![Captura de la instalacion de wordpress.](imagenes/imagen4.png)
 
 **Reflexión:** ¿Por qué hay que cambiar el propietario de la carpeta de WordPress a `www-data`? ¿Qué podría fallar si siguiera siendo tu usuario?
 
@@ -174,7 +177,8 @@ WordPress comprueba el acceso a la base de datos y crea `wp-config.php`; luego c
 **Mis datos no sensibles:** Título [completar] · Usuario administrador [completar] · Correo [completar].  
 
 
-📸 **Capturas:** `img/05-instalador-base-datos.png` — datos, con la contraseña tapada; `img/05-instalador-sitio.png` — datos del sitio, con la contraseña tapada; `img/05-escritorio-wordpress.png` — escritorio con sesión iniciada.
+**Capturas:**
+![Captura de la instalacion de wordpress.](imagenes/imagen5.png)
 
 **Reflexión:** ¿Qué partes de la instalación has hecho en la terminal y cuáles en el navegador? ¿Por qué el servidor no necesita tener interfaz gráfica?
 
@@ -193,7 +197,8 @@ sudo mariadb wordpress -e "SHOW TABLES;"
 
 La práctica indica que deberían verse unas 12 tablas, cuyos nombres empiezan por `wp_`. Entre ellas, `wp_posts` guarda entradas y páginas, `wp_users` los usuarios y `wp_options` la configuración. WordPress guarda los ficheros del sitio en `/var/www/html/`; la conexión está en `/var/www/html/wp-config.php` (contiene una contraseña, no lo compartas); temas, plugins e imágenes están bajo `/var/www/html/wp-content/`; entradas, usuarios y ajustes están en MariaDB.
 
-📸 **Capturas:** `img/06-entrada-publicada.png` — entrada visible en la web; `img/06-tablas-wordpress.png` — resultado de `SHOW TABLES`.
+**Capturas:**
+![Captura de la instalacion de wordpress.](imagenes/imagen6.png)
 
 **Reflexión:** ¿Dónde guarda WordPress las entradas que escribes: en ficheros del servidor o en la base de datos? ¿Cómo lo has comprobado?
 
@@ -223,7 +228,8 @@ php -l /var/www/html/wp-config.php
 **Salida esperada (ejemplo orientativo):** `No syntax errors detected in /var/www/html/wp-config.php`. Verifica el resultado y la web en tus capturas. Esta solución es para el laboratorio; en un servidor real se usaría una dirección fija.
 
 
-📸 **Capturas:** `img/07-wp-config-host.png` — las dos líneas, sin mostrar contraseñas; `img/07-php-sintaxis.png` — resultado de `php -l`.
+**Capturas:**
+![Captura de la instalacion de wordpress.](imagenes/imagen7.png)
 
 ## 8. Dos ajustes para trabajar cómodamente
 
@@ -268,7 +274,8 @@ sudo systemctl restart apache2
 En el panel, abre **Medios → Añadir nuevo** y comprueba el tamaño máximo indicado.
 
 
-📸 **Capturas:** `img/08-configuracion-apache.png` — configuración y comprobación; `img/08-enlace-permanente.png` — URL de una entrada; `img/08-limite-subida.png` — límite mostrado en Medios.
+**Capturas:** 
+![Captura de la instalacion de wordpress.](imagenes/imagen8.png)
 
 **Reflexión:** ¿Por qué las direcciones “bonitas” dan error 404 si Apache no tiene permitido leer el fichero `.htaccess`?
 
@@ -292,7 +299,8 @@ systemctl is-active mariadb
 Recarga la web y comprueba si se recuperó. Si aparece el error, la guía propone comprobar primero el estado del servicio (`systemctl is-active mariadb`; arrancarlo con `sudo systemctl start mariadb` si no está activo) y después probar el acceso con `mariadb -u wp_user -p wordpress`.
 
 
-📸 **Capturas:** `img/09-error-mariadb.png` — error observado; `img/09-web-recuperada.png` — web tras arrancar MariaDB.
+**Capturas:**
+![Captura de la instalacion de wordpress.](imagenes/imagen9.png)
 
 **Reflexión:** Cuando WordPress muestra “Error al establecer una conexión con la base de datos”, ¿qué dos cosas comprobarías y en qué orden?
 
@@ -330,16 +338,12 @@ Completa la tabla únicamente con resultados verificados en tu servidor:
 
 Antes de terminar, crea una nueva instantánea (snapshot) de la máquina virtual.
 
-📸 **Captura:** `img/10-comprobacion-final.png` — comandos y resultados finales, sin credenciales.
+**Captura:**
+![Captura de la instalacion de wordpress.](imagenes/imagen10.png)
 
 ## Conclusiones y problemas encontrados
 
-**Conclusiones:** [Resume qué aprendiste sobre SSH, Apache, MariaDB, PHP y el acceso a WordPress desde el navegador.]
+**Conclusiones:** En esta práctica he instalado WordPress en un servidor Ubuntu 24.04 con Apache, PHP y MariaDB. He aprendido a administrar el servidor mediante SSH y a completar la instalación desde el navegador, sin que el servidor necesite una interfaz gráfica. También he comprobado que WordPress guarda las entradas y la configuración en una base de datos MariaDB, mientras que sus archivos se encuentran en el directorio web. Por último, he configurado los enlaces permanentes y el tamaño máximo de subida, y he observado que WordPress necesita que MariaDB esté activo para mostrar la web.
 
-**Problemas encontrados y solución:**
-
-| Problema observado | Cómo lo diagnostiqué | Solución aplicada | Resultado verificado |
-|---|---|---|---|
-| [Completar; si no hubo problemas, indícalo] | [Completar] | [Completar] | [Completar] |
 
 

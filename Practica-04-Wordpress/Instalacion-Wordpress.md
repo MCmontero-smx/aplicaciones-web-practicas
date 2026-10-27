@@ -98,6 +98,7 @@ Introduce la contraseña cuando se pida. Si aparece `MariaDB [wordpress]>`, la c
 
 **Captura:**
 ![Captura de la instalacion de wordpress.](imagenes/imagen3.png)
+![Captura de la instalacion de wordpress.](imagenes/imagen33.png)
 **Reflexión:** ¿Por qué crees que WordPress usa su propio usuario `wp_user` con permiso solo sobre su base y no el usuario `root` de MariaDB?
 
 **Respuesta:** Así WordPress trabaja con una cuenta dedicada y limitada a su propia base. No necesita acceso administrativo a todo MariaDB; si la aplicación tuviera un problema, sus permisos quedan acotados.
@@ -146,6 +147,7 @@ ls -ld /var/www/html
 
 **Captura:** 
 ![Captura de la instalacion de wordpress.](imagenes/imagen4.png)
+![Captura de la instalacion de wordpress.](imagenes/imagen44.png)
 
 **Reflexión:** ¿Por qué hay que cambiar el propietario de la carpeta de WordPress a `www-data`? ¿Qué podría fallar si siguiera siendo tu usuario?
 
@@ -174,6 +176,8 @@ WordPress comprueba el acceso a la base de datos y crea `wp-config.php`; luego c
 
 **Capturas:**
 ![Captura de la instalacion de wordpress.](imagenes/imagen5.png)
+![Captura de la instalacion de wordpress.](imagenes/imagen55.png)
+![Captura de la instalacion de wordpress.](imagenes/imagen555.png)
 
 **Reflexión:** ¿Qué partes de la instalación has hecho en la terminal y cuáles en el navegador? ¿Por qué el servidor no necesita tener interfaz gráfica?
 
@@ -194,6 +198,8 @@ La práctica indica que deberían verse unas 12 tablas, cuyos nombres empiezan p
 
 **Capturas:**
 ![Captura de la instalacion de wordpress.](imagenes/imagen6.png)
+![Captura de la instalacion de wordpress.](imagenes/imagen66.png)
+![Captura de la instalacion de wordpress.](imagenes/imagen666.png)
 
 **Reflexión:** ¿Dónde guarda WordPress las entradas que escribes: en ficheros del servidor o en la base de datos? ¿Cómo lo has comprobado?
 
@@ -225,6 +231,7 @@ php -l /var/www/html/wp-config.php
 
 **Capturas:**
 ![Captura de la instalacion de wordpress.](imagenes/imagen7.png)
+![Captura de la instalacion de wordpress.](imagenes/imagen77.png)
 
 ## 8. Dos ajustes para trabajar cómodamente
 
@@ -271,6 +278,7 @@ En el panel, abre **Medios → Añadir nuevo** y comprueba el tamaño máximo in
 
 **Capturas:** 
 ![Captura de la instalacion de wordpress.](imagenes/imagen8.png)
+![Captura de la instalacion de wordpress.](imagenes/imagen88.png)
 
 **Reflexión:** ¿Por qué las direcciones “bonitas” dan error 404 si Apache no tiene permitido leer el fichero `.htaccess`?
 
@@ -296,6 +304,7 @@ Recarga la web y comprueba si se recuperó. Si aparece el error, la guía propon
 
 **Capturas:**
 ![Captura de la instalacion de wordpress.](imagenes/imagen9.png)
+![Captura de la instalacion de wordpress.](imagenes/imagen99.png)
 
 **Reflexión:** Cuando WordPress muestra “Error al establecer una conexión con la base de datos”, ¿qué dos cosas comprobarías y en qué orden?
 
@@ -326,19 +335,16 @@ Completa la tabla únicamente con resultados verificados en tu servidor:
 
 | Dato | Valor no sensible |
 |---|---|
-| Dirección de la web | `http://IP_DEL_SERVIDOR` o [tu dirección] |
-| Panel de administración | `http://IP_DEL_SERVIDOR/wp-admin` o [tu dirección] |
-| Usuario administrador | [El usuario que creaste] |
-| Contraseña | `********` (guardada en privado, no en GitHub) |
+| Dirección de la web | `http://192.168.56.12 ' |
+| Panel de administración | `http://192.168.56.12/wp-admin`  |
+| Usuario administrador | Monito3t |
+| Contraseña | `********`  |
 
 Antes de terminar, crea una nueva instantánea (snapshot) de la máquina virtual.
 
-**Captura:**
+**Capturas:**
 ![Captura de la instalacion de wordpress.](imagenes/imagen10.png)
 
 ## Conclusiones y problemas encontrados
 
 **Conclusiones:** En esta práctica he instalado WordPress en un servidor Ubuntu 24.04 con Apache, PHP y MariaDB. He aprendido a administrar el servidor mediante SSH y a completar la instalación desde el navegador, sin que el servidor necesite una interfaz gráfica. También he comprobado que WordPress guarda las entradas y la configuración en una base de datos MariaDB, mientras que sus archivos se encuentran en el directorio web. Por último, he configurado los enlaces permanentes y el tamaño máximo de subida, y he observado que WordPress necesita que MariaDB esté activo para mostrar la web.
-
-
-

@@ -97,6 +97,7 @@ Introduce la contraseña cuando se pida. Si aparece `MariaDB [wordpress]>`, la c
 
 
 **Capturas:**
+
 ![Captura de la instalacion de wordpress.](imagenes/imagen3.png)
 ![Captura de la instalacion de wordpress.](imagenes/imagen33.png)
 
@@ -147,6 +148,7 @@ ls -ld /var/www/html
 
 
 **Capturas:** 
+
 ![Captura de la instalacion de wordpress.](imagenes/imagen4.png)
 ![Captura de la instalacion de wordpress.](imagenes/imagen44.png)
 

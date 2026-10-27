@@ -1,261 +1,345 @@
 # Instalación de WordPress 
 
-## 1. Conexión por SSH
+## 1. Conexión por SSH y comprobación del servidor
 
-Me conecté al servidor desde el equipo cliente con SSH:
+En la consola de la máquina virtual, averigua la IP:
 
 ```bash
-ssh usuario@IP_DEL_SERVIDOR
+hostname -I
 ```
 
-En esta práctica, la dirección del servidor era `192.168.56.12`. SSH permite acceder a la terminal del servidor desde otro equipo.
+Desde PowerShell o una terminal del ordenador, conéctate (reemplaza los valores de ejemplo):
 
-![Conexión SSH al servidor](imagenes/imagen1.png)
+```bash
+ssh TU_USUARIO@IP_DEL_SERVIDOR
+```
 
-## 2. Comprobación de Apache, MariaDB y PHP
-
-Comprobé que Apache y MariaDB estuvieran activos y consulté la versión de PHP:
+La primera conexión puede pedir confirmar la identidad del servidor: escribe `yes`. Introduce la contraseña de tu usuario cuando se solicite; no se mostrará mientras la escribes. Ya dentro del servidor, comprueba los servicios y PHP:
 
 ```bash
 systemctl is-active apache2 mariadb
 php -v
 ```
 
-Los dos servicios deben indicar `active`. Apache sirve las páginas web, MariaDB almacena los datos y PHP ejecuta WordPress.
+**Salida esperada (ejemplo orientativo; comprueba con tu captura):** `active` para ambos servicios y PHP `8.3.x`.
 
-![Comprobación de Apache, MariaDB y PHP](imagenes/imagen2.png)
 
-También revisé los sitios habilitados en Apache:
+📸 **Captura:** `img/01-ssh-servicios-php.png` — terminal con la conexión SSH y las comprobaciones.
 
-```bash
-ls /etc/apache2/sites-enabled/
-```
+**Reflexión:** ¿Qué dos “puertas” (programas y puertos) usas para trabajar con el servidor en esta práctica y para qué sirve cada una?
 
-La actividad pide trabajar con un único sitio activo. Si se va a utilizar el sitio predeterminado, se pueden deshabilitar otros sitios usando sus nombres reales:
+**Respuesta:** SSH usa el puerto 22 y una terminal para administrar el servidor mediante texto. HTTP usa el puerto 80 y un navegador para ver y utilizar WordPress.
+
+## 2. Dejar Apache con un único sitio
+
+Desactiva los sitios anteriores y habilita el sitio por defecto:
 
 ```bash
 sudo a2dissite sitio1.conf sitio2.conf
 sudo a2ensite 000-default.conf
+sudo apache2ctl configtest
 sudo systemctl reload apache2
-ls /etc/apache2/sites-enabled/
 ```
 
-## 3. Creación de la base de datos y del usuario
+La prueba de configuración debe indicar `Syntax OK`. Si aparece un aviso de que Apache no conoce un nombre de servidor global, la guía propone:
 
-Entré en MariaDB como administrador:
+```bash
+echo "ServerName localhost" | sudo tee /etc/apache2/conf-available/servername.conf
+sudo a2enconf servername
+sudo apache2ctl configtest
+sudo systemctl reload apache2
+```
+
+Comprueba el sitio activo y su carpeta:
+
+```bash
+ls /etc/apache2/sites-enabled/
+grep DocumentRoot /etc/apache2/sites-enabled/000-default.conf
+```
+
+**Salida esperada (ejemplo orientativo):** solo `000-default.conf` en la primera salida; `DocumentRoot /var/www/html` en la segunda. Abre `http://IP_DEL_SERVIDOR` en el navegador: debe mostrarse la página de bienvenida de Apache o el contenido que ya tenías en esa carpeta.
+
+
+
+📸 **Capturas:** `img/02-apache-sitio-activo.png` — comandos y salidas; `img/02-apache-navegador.png` — página obtenida desde el navegador.
+
+**Reflexión:** ¿Qué diferencia hay entre desactivar un sitio con `a2dissite` y borrar sus ficheros? ¿Por qué ahora ves la página por defecto de Apache y antes veías sitio1?
+
+**Respuesta:** Desactivar un sitio lo quita de la configuración activa de Apache, pero conserva sus ficheros. Borrarlos los eliminaría del servidor. Ahora Apache tiene habilitado `000-default.conf`, cuyo `DocumentRoot` es `/var/www/html`; antes atendía las peticiones el sitio que estaba activo para esa configuración.
+
+## 3. Crear la base de datos de WordPress
+
+Elige una contraseña de al menos 12 caracteres, usando solo letras, números y guion bajo. Guárdala en un lugar privado; **no la escribas en el repositorio ni en una captura**. En el ejemplo siguiente, reemplaza `ClaveSegura_2026` por tu clave real solo en tu terminal.
 
 ```bash
 sudo mariadb
 ```
 
-Creé la base de datos y el usuario para WordPress:
+En el indicador de MariaDB ejecuta, una línea cada vez:
 
 ```sql
 CREATE DATABASE wordpress;
-CREATE USER 'wp_user'@'localhost' IDENTIFIED BY 'PON_AQUI_UNA_CLAVE_SEGURA';
+CREATE USER 'wp_user'@'localhost' IDENTIFIED BY 'ClaveSegura_2026';
 GRANT ALL ON wordpress.* TO 'wp_user'@'localhost';
-FLUSH PRIVILEGES;
-EXIT;
+exit
 ```
 
-**¿Para qué sirven la base de datos y el usuario?** La base de datos guarda entradas, páginas, usuarios y ajustes. El usuario permite que WordPress acceda a esos datos sin utilizar la cuenta administradora de MariaDB.
-
-![Creación de la base de datos y el usuario](imagenes/Captura%20de%202026-10-23%2009-20-43.png)
-
-> Oculta la contraseña de la captura antes de subirla a GitHub.
-
-## 4. Descarga e instalación de WordPress
-
-Descargué WordPress, lo descomprimí y copié los archivos al directorio web de Apache:
+Las tres instrucciones deben responder `Query OK`. Verifica el acceso con el usuario nuevo:
 
 ```bash
+mariadb -u wp_user -p wordpress
+```
+
+Introduce la contraseña cuando se pida. Si aparece `MariaDB [wordpress]>`, la conexión funciona; sal con `exit`.
+
+**Qué hace cada instrucción:**
+
+- `CREATE DATABASE wordpress;` crea la base de datos.
+- `CREATE USER ... IDENTIFIED BY ...;` crea el usuario local `wp_user` y le asigna una contraseña.
+- `GRANT ALL ON wordpress.* ...;` concede a ese usuario permisos sobre la base `wordpress`.
+
+
+📸 **Captura:** `img/03-mariadb-base-usuario.png` — creación y conexión con `wp_user`; comprueba que la contraseña no sea visible.
+
+**Reflexión:** ¿Por qué crees que WordPress usa su propio usuario `wp_user` con permiso solo sobre su base y no el usuario `root` de MariaDB?
+
+**Respuesta:** Así WordPress trabaja con una cuenta dedicada y limitada a su propia base. No necesita acceso administrativo a todo MariaDB; si la aplicación tuviera un problema, sus permisos quedan acotados.
+
+## 4. Descargar e instalar los ficheros de WordPress
+
+### 4.1 Descargar y descomprimir
+
+```bash
+sudo apt install wget -y
 cd /tmp
-curl -O https://wordpress.org/latest.tar.gz
+wget https://wordpress.org/latest.tar.gz
 tar -xzf latest.tar.gz
-sudo cp -a /tmp/wordpress/. /var/www/html/
+ls wordpress
 ```
 
-El directorio `/var/www/html/` contiene los archivos que Apache publica en la web.
+`wget` descarga el archivo, `tar -xzf` lo descomprime y `ls` permite ver el contenido. Entre los elementos esperados están `index.php`, `wp-admin`, `wp-content` y `wp-config-sample.php`.
 
-## 5. Permisos y archivo de configuración
-
-Comprobé el directorio web y asigné sus archivos al usuario de Apache:
+### 4.2 Copiar al directorio del sitio
 
 ```bash
-ls -ld /var/www/html
+sudo rm /var/www/html/index.html
+sudo cp -a /tmp/wordpress/. /var/www/html/
+rm -r /tmp/wordpress /tmp/latest.tar.gz
+ls /var/www/html
+```
+
+Estas órdenes eliminan la página de bienvenida de Apache, copian el contenido de WordPress al directorio web, borran los archivos temporales de descarga y muestran el contenido instalado. La web se abrirá en `http://IP_DEL_SERVIDOR`. Si sigue apareciendo el contenido anterior, la guía sugiere comprobar la respuesta local:
+
+```bash
+curl -I http://localhost
+```
+
+
+### 4.3 Asignar permisos
+
+```bash
 sudo chown -R www-data:www-data /var/www/html
 sudo find /var/www/html -type d -exec chmod 755 {} \;
 sudo find /var/www/html -type f -exec chmod 644 {} \;
+ls -ld /var/www/html
 ```
 
-![Comprobación del directorio web](imagenes/Captura%20de%202026-10-23%2009-35-45.png)
+`chown` asigna recursivamente los archivos al usuario y grupo de Apache, `www-data`. Los dos `find` aplican permisos `755` a directorios y `644` a ficheros. La última salida debe mostrar `www-data` como propietario y grupo.
 
-![Cambio de propietario y permisos](imagenes/Captura%20de%202026-10-23%2009-35-51.png)
 
-Creé el archivo de configuración de WordPress a partir de la plantilla:
+📸 **Captura:** `img/04-wordpress-ficheros-permisos.png` — contenido de WordPress y permisos del directorio.
 
-```bash
-cd /var/www/html
-sudo cp wp-config-sample.php wp-config.php
-sudo nano /var/www/html/wp-config.php
-```
+**Reflexión:** ¿Por qué hay que cambiar el propietario de la carpeta de WordPress a `www-data`? ¿Qué podría fallar si siguiera siendo tu usuario?
 
-En el archivo configuré los datos de MariaDB:
+**Respuesta:** Apache se ejecuta como `www-data`, por lo que ese usuario necesita escribir donde WordPress guarda su configuración, imágenes o plugins. Si la carpeta perteneciera a otro usuario y Apache no tuviera permisos de escritura, esas operaciones podrían fallar.
 
-```php
-define( 'DB_NAME', 'wordpress' );
-define( 'DB_USER', 'wp_user' );
-define( 'DB_PASSWORD', 'PON_AQUI_LA_CLAVE_DE_LA_BASE_DE_DATOS' );
-define( 'DB_HOST', 'localhost' );
-```
+## 5. Terminar la instalación desde el navegador
 
-**¿Qué contiene `wp-config.php`?** Contiene la información necesaria para conectar WordPress con MariaDB. Como incluye una contraseña, no se debe subir a GitHub.
+Abre `http://IP_DEL_SERVIDOR` (o `http://localhost:8080` si usas el túnel). Sigue el asistente:
 
-Comprobé la sintaxis PHP del archivo:
+1. Elige el idioma y pulsa **Continuar**.
+2. En la bienvenida, pulsa **¡Vamos a ello!**.
+3. En los datos de base de datos, indica:
+   - Base de datos: `wordpress`
+   - Usuario: `wp_user`
+   - Contraseña: la que elegiste en el apartado 3 (no la copies en la memoria)
+   - Servidor: `localhost`
+   - Prefijo: `wp_`
+4. Pulsa **Enviar** y luego **Iniciar la instalación** cuando confirme que todo está en orden.
+5. En la información del sitio, elige un título, tu usuario administrador, una contraseña segura y un correo. No uses `admin` como usuario. Para el sitio de prácticas, marca **Disuadir a los motores de búsqueda**.
+6. Pulsa **Instalar WordPress** y después **Iniciar sesión**.
 
-```bash
-sudo php -l /var/www/html/wp-config.php
-```
+WordPress comprueba el acceso a la base de datos y crea `wp-config.php`; luego crea las tablas y el usuario administrador. Inicia sesión y comprueba que aparece el escritorio.
 
-![Comprobación de sintaxis de wp-config.php](imagenes/Captura%20de%20pantalla%202026-10-27%20201542.png)
+**Mis datos no sensibles:** Título [completar] · Usuario administrador [completar] · Correo [completar].  
 
-## 6. Instalación desde el navegador
 
-Abrí la dirección del servidor:
+📸 **Capturas:** `img/05-instalador-base-datos.png` — datos, con la contraseña tapada; `img/05-instalador-sitio.png` — datos del sitio, con la contraseña tapada; `img/05-escritorio-wordpress.png` — escritorio con sesión iniciada.
 
-```text
-http://192.168.56.12/
-```
+**Reflexión:** ¿Qué partes de la instalación has hecho en la terminal y cuáles en el navegador? ¿Por qué el servidor no necesita tener interfaz gráfica?
 
-WordPress mostró el asistente de instalación.
+**Respuesta:** En la terminal preparé Apache, MariaDB, los ficheros y sus permisos. En el navegador completé el asistente y accedí al panel. El servidor no necesita escritorio porque entrega la web; el navegador del ordenador la representa y permite interactuar con ella.
 
-![Pantalla inicial del instalador](imagenes/Captura%20de%202026-10-23%2009-31-16.png)
+## 6. Comprobar que WordPress funciona
 
-En el formulario introduje el título del sitio y creé el usuario administrador con una contraseña segura.
-
-![Formulario de instalación](imagenes/Captura%20de%202026-10-23%2009-45-09.png)
-
-Al terminar, WordPress confirmó que la instalación se había completado.
-
-![Instalación completada](imagenes/Captura%20de%202026-10-23%2009-45-27.png)
-
-## 7. Comprobación del sitio y de la base de datos
-
-Entré en el panel de administración:
-
-```text
-http://192.168.56.12/wp-admin/
-```
-
-![Escritorio de WordPress](imagenes/Captura%20de%202026-10-23%2009-45-58.png)
-
-Abrí también el sitio público:
-
-![Página pública de WordPress](imagenes/Captura%20de%202026-10-23%2009-46-33.png)
-
-Creé una entrada y comprobé que se mostrara en la web:
-
-![Editor de entradas](imagenes/Captura%20de%202026-10-23%2009-47-59.png)
-
-![Entrada publicada](imagenes/Captura%20de%202026-10-23%2009-48-13.png)
-
-Comprobé las tablas que WordPress creó en MariaDB:
+1. Abre `http://IP_DEL_SERVIDOR` y comprueba el sitio público y el título elegido.
+2. Abre `http://IP_DEL_SERVIDOR/wp-admin` e inicia sesión.
+3. En **Entradas → Añadir nueva**, crea y publica una entrada de prueba. Comprueba que aparece en la web pública.
+4. En la terminal, consulta las tablas:
 
 ```bash
 sudo mariadb wordpress -e "SHOW TABLES;"
 ```
 
-Tablas como `wp_posts`, `wp_users` y `wp_options` almacenan el contenido, los usuarios y los ajustes.
+La práctica indica que deberían verse unas 12 tablas, cuyos nombres empiezan por `wp_`. Entre ellas, `wp_posts` guarda entradas y páginas, `wp_users` los usuarios y `wp_options` la configuración. WordPress guarda los ficheros del sitio en `/var/www/html/`; la conexión está en `/var/www/html/wp-config.php` (contiene una contraseña, no lo compartas); temas, plugins e imágenes están bajo `/var/www/html/wp-content/`; entradas, usuarios y ajustes están en MariaDB.
 
-![Tablas de WordPress](imagenes/Captura%20de%202026-10-23%2009-50-48.png)
+📸 **Capturas:** `img/06-entrada-publicada.png` — entrada visible en la web; `img/06-tablas-wordpress.png` — resultado de `SHOW TABLES`.
 
-## 8. Dirección y ajustes del sitio
+**Reflexión:** ¿Dónde guarda WordPress las entradas que escribes: en ficheros del servidor o en la base de datos? ¿Cómo lo has comprobado?
 
-La dirección del sitio de la práctica es:
+**Respuesta:** Las guarda en la base de datos MariaDB. Lo comprobé consultando sus tablas con `SHOW TABLES`; la práctica identifica `wp_posts` como la tabla de entradas y páginas.
 
-```text
-http://192.168.56.12/
+## 7. Evitar problemas si cambia la IP
+
+La dirección usada durante la instalación puede quedar guardada en la base de datos. Para este laboratorio, la práctica indica configurar WordPress para que use el host de la petición. Edita:
+
+```bash
+sudo nano /var/www/html/wp-config.php
 ```
 
-En `wp-config.php`, `WP_HOME` y `WP_SITEURL` especifican la dirección principal y la ubicación de WordPress. Deben coincidir con la dirección real del servidor:
+Busca `That's all` con `Ctrl+W`. Antes de la línea `/* That's all, stop editing!`, añade:
 
 ```php
-define( 'WP_HOME', 'http://' . $_SERVER['HTTP_HOST'] );
+define( 'WP_HOME',    'http://' . $_SERVER['HTTP_HOST'] );
 define( 'WP_SITEURL', 'http://' . $_SERVER['HTTP_HOST'] );
 ```
 
-**¿Qué puede pasar si la dirección está mal?** WordPress puede redirigir a una URL incorrecta o dejar de cargar correctamente.
+Guarda con `Ctrl+O`, confirma con Enter y sal con `Ctrl+X`. Comprueba la sintaxis y vuelve a cargar el sitio:
 
-![Configuración de WP_HOME y WP_SITEURL](imagenes/Captura%20de%20pantalla%202026-10-27%20201412.png)
+```bash
+php -l /var/www/html/wp-config.php
+```
 
-En **Ajustes → Enlaces permanentes**, seleccioné **Nombre de la entrada** y guardé los cambios. Esta opción genera direcciones más legibles. Para que funcione, activé la reescritura de Apache:
+**Salida esperada (ejemplo orientativo):** `No syntax errors detected in /var/www/html/wp-config.php`. Verifica el resultado y la web en tus capturas. Esta solución es para el laboratorio; en un servidor real se usaría una dirección fija.
+
+
+📸 **Capturas:** `img/07-wp-config-host.png` — las dos líneas, sin mostrar contraseñas; `img/07-php-sintaxis.png` — resultado de `php -l`.
+
+## 8. Dos ajustes para trabajar cómodamente
+
+### 8.1 Enlaces permanentes
+
+Permite que Apache lea las reglas de `.htaccess` en el directorio web:
+
+```bash
+sudo nano /etc/apache2/conf-available/wordpress.conf
+```
+
+Escribe:
+
+```apache
+<Directory /var/www/html>
+    AllowOverride All
+</Directory>
+```
+
+Activa `rewrite` y la configuración, valida y reinicia Apache:
 
 ```bash
 sudo a2enmod rewrite
+sudo a2enconf wordpress
+sudo apache2ctl configtest
 sudo systemctl restart apache2
 ```
 
-![Ajustes de enlaces permanentes](imagenes/Captura%20de%20pantalla%202026-10-27%20202826.png)
+En WordPress, ve a **Ajustes → Enlaces permanentes → Nombre de la entrada → Guardar cambios**. Abre una entrada y comprueba que su dirección es legible. Comprueba también el fichero:
 
-Configuré el límite de subida de PHP en 64 MB:
+```bash
+ls -la /var/www/html/.htaccess
+```
+
+### 8.2 Subidas de hasta 64 MB
 
 ```bash
 printf 'upload_max_filesize = 64M\npost_max_size = 64M\n' | sudo tee /etc/php/8.3/apache2/conf.d/99-wordpress.ini
 sudo systemctl restart apache2
 ```
 
-`upload_max_filesize` limita el tamaño de cada archivo y `post_max_size` el tamaño total de la petición.
+En el panel, abre **Medios → Añadir nuevo** y comprueba el tamaño máximo indicado.
 
-![Límites de subida de PHP](imagenes/Captura%20de%20pantalla%202026-10-27%20203207.png)
 
-## 9. Error de conexión con MariaDB
+📸 **Capturas:** `img/08-configuracion-apache.png` — configuración y comprobación; `img/08-enlace-permanente.png` — URL de una entrada; `img/08-limite-subida.png` — límite mostrado en Medios.
 
-Durante la actividad apareció el mensaje **Error establishing a database connection**. Significa que WordPress no pudo conectarse a MariaDB.
+**Reflexión:** ¿Por qué las direcciones “bonitas” dan error 404 si Apache no tiene permitido leer el fichero `.htaccess`?
 
-![Error de conexión con MariaDB](imagenes/Captura%20de%20pantalla%202026-10-27%20203619.png)
+**Respuesta:** WordPress guarda en `.htaccess` las reglas que permiten a Apache resolver esas direcciones. Si Apache no puede aplicar las reglas del archivo, no sabe cómo dirigir la petición a la entrada y puede devolver 404.
 
-Para revisar el problema, comprobé que MariaDB estuviera activo:
+## 9. Qué pasa si MariaDB se para
+
+Detén MariaDB para observar el efecto:
 
 ```bash
+sudo systemctl stop mariadb
+```
+
+Recarga `http://IP_DEL_SERVIDOR`: WordPress debería mostrar un error de conexión con la base de datos. Vuelve a iniciar el servicio y comprueba su estado:
+
+```bash
+sudo systemctl start mariadb
 systemctl is-active mariadb
 ```
 
-Después comprobé que la base de datos tuviera las tablas de WordPress:
+Recarga la web y comprueba si se recuperó. Si aparece el error, la guía propone comprobar primero el estado del servicio (`systemctl is-active mariadb`; arrancarlo con `sudo systemctl start mariadb` si no está activo) y después probar el acceso con `mariadb -u wp_user -p wordpress`.
+
+
+📸 **Capturas:** `img/09-error-mariadb.png` — error observado; `img/09-web-recuperada.png` — web tras arrancar MariaDB.
+
+**Reflexión:** Cuando WordPress muestra “Error al establecer una conexión con la base de datos”, ¿qué dos cosas comprobarías y en qué orden?
+
+**Respuesta:** Primero comprobaría que MariaDB está activo y lo arrancaría si hace falta. Después comprobaría las credenciales y el acceso de `wp_user` intentando conectarme a la base `wordpress`.
+
+## 10. Comprobación final
+
+Ejecuta las comprobaciones finales:
 
 ```bash
+systemctl is-active apache2 mariadb
+php -v
+ls /etc/apache2/sites-enabled/
 sudo mariadb wordpress -e "SHOW TABLES;"
 ```
 
-También revisé que los valores de `DB_NAME`, `DB_USER`, `DB_PASSWORD` y `DB_HOST` en `wp-config.php` coincidieran con los configurados en MariaDB.
+Completa la tabla únicamente con resultados verificados en tu servidor:
 
-**¿Qué puede causar este error?** MariaDB puede estar detenido, los datos de conexión pueden ser incorrectos o el usuario puede no tener permisos. Para volver a conceder los permisos:
+| Pieza | Comprobación esperada según la práctica | Mi resultado real |
+|---|---|---|
+| Linux | Ubuntu 24.04 | [Completar] |
+| Apache | Apache2, un único sitio, activo | [Completar] |
+| MariaDB | MariaDB 10.11, activa y con la base `wordpress` | [Completar] |
+| PHP | PHP 8.3 activo | [Completar] |
+| WordPress | Instalado en `/var/www/html` y accesible desde el navegador | [Completar] |
 
-```sql
-GRANT ALL ON wordpress.* TO 'wp_user'@'localhost';
-FLUSH PRIVILEGES;
-```
+**Datos de acceso para guardar en un lugar privado (no publicar contraseñas):**
 
-![Comprobaciones de los servicios y la base de datos](imagenes/Captura%20de%20pantalla%202026-10-27%20203902.png)
+| Dato | Valor no sensible |
+|---|---|
+| Dirección de la web | `http://IP_DEL_SERVIDOR` o [tu dirección] |
+| Panel de administración | `http://IP_DEL_SERVIDOR/wp-admin` o [tu dirección] |
+| Usuario administrador | [El usuario que creaste] |
+| Contraseña | `********` (guardada en privado, no en GitHub) |
 
-Tras revisar la configuración, volví a comprobar el sitio:
+Antes de terminar, crea una nueva instantánea (snapshot) de la máquina virtual.
 
-![Sitio WordPress tras las comprobaciones](imagenes/Captura%20de%20pantalla%202026-10-27%20203708.png)
+📸 **Captura:** `img/10-comprobacion-final.png` — comandos y resultados finales, sin credenciales.
 
-## 10. Conclusiones y publicación en GitHub
+## Conclusiones y problemas encontrados
 
-La instalación quedó comprobada al poder entrar al panel de administración, ver el sitio público y consultar las tablas de WordPress en MariaDB.
+**Conclusiones:** [Resume qué aprendiste sobre SSH, Apache, MariaDB, PHP y el acceso a WordPress desde el navegador.]
 
-Para que las imágenes aparezcan en GitHub, guardé todas las capturas en una carpeta llamada `imagenes`, junto al `README.md`. Añadí este `.gitignore` para evitar subir archivos privados:
+**Problemas encontrados y solución:**
 
-```gitignore
-wp-config.php
-wp-config-*.php
-*.sql
-*.sql.gz
-*.bak
-*.backup
-*.log
-wp-content/uploads/
-```
+| Problema observado | Cómo lo diagnostiqué | Solución aplicada | Resultado verificado |
+|---|---|---|---|
+| [Completar; si no hubo problemas, indícalo] | [Completar] | [Completar] | [Completar] |
 
-La documentación oficial de WordPress está disponible en [wordpress.org/documentation](https://wordpress.org/documentation/) y sus requisitos en [wordpress.org/about/requirements](https://wordpress.org/about/requirements/).
+

@@ -96,9 +96,10 @@ Introduce la contraseña cuando se pida. Si aparece `MariaDB [wordpress]>`, la c
 - `GRANT ALL ON wordpress.* ...;` concede a ese usuario permisos sobre la base `wordpress`.
 
 
-**Captura:**
+**Capturas:**
 ![Captura de la instalacion de wordpress.](imagenes/imagen3.png)
 ![Captura de la instalacion de wordpress.](imagenes/imagen33.png)
+
 **Reflexión:** ¿Por qué crees que WordPress usa su propio usuario `wp_user` con permiso solo sobre su base y no el usuario `root` de MariaDB?
 
 **Respuesta:** Así WordPress trabaja con una cuenta dedicada y limitada a su propia base. No necesita acceso administrativo a todo MariaDB; si la aplicación tuviera un problema, sus permisos quedan acotados.
@@ -145,7 +146,7 @@ ls -ld /var/www/html
 `chown` asigna recursivamente los archivos al usuario y grupo de Apache, `www-data`. Los dos `find` aplican permisos `755` a directorios y `644` a ficheros. La última salida debe mostrar `www-data` como propietario y grupo.
 
 
-**Captura:** 
+**Capturas:** 
 ![Captura de la instalacion de wordpress.](imagenes/imagen4.png)
 ![Captura de la instalacion de wordpress.](imagenes/imagen44.png)
 

@@ -60,11 +60,6 @@ grep DocumentRoot /etc/apache2/sites-enabled/000-default.conf
 
 **Salida esperada (ejemplo orientativo):** solo `000-default.conf` en la primera salida; `DocumentRoot /var/www/html` en la segunda. Abre `http://IP_DEL_SERVIDOR` en el navegador: debe mostrarse la página de bienvenida de Apache o el contenido que ya tenías en esa carpeta.
 
-
-
-**Capturas:** 
-![Captura de la instalacion de wordpress.](imagenes/imagen2.png)
-
 **Reflexión:** ¿Qué diferencia hay entre desactivar un sitio con `a2dissite` y borrar sus ficheros? ¿Por qué ahora ves la página por defecto de Apache y antes veías sitio1?
 
 **Respuesta:** Desactivar un sitio lo quita de la configuración activa de Apache, pero conserva sus ficheros. Borrarlos los eliminaría del servidor. Ahora Apache tiene habilitado `000-default.conf`, cuyo `DocumentRoot` es `/var/www/html`; antes atendía las peticiones el sitio que estaba activo para esa configuración.

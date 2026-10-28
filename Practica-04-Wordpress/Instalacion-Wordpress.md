@@ -25,6 +25,7 @@ php -v
 
 
 **Captura:** 
+
 ![Captura de la instalacion de wordpress.](imagenes/imagen1.png)
 
 **Reflexión:** ¿Qué dos “puertas” (programas y puertos) usas para trabajar con el servidor en esta práctica y para qué sirve cada una?

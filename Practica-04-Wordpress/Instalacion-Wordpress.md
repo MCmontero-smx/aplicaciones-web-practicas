@@ -179,6 +179,7 @@ WordPress comprueba el acceso a la base de datos y crea `wp-config.php`; luego c
 
 
 **Capturas:**
+
 ![Captura de la instalacion de wordpress.](imagenes/imagen5.png)
 ![Captura de la instalacion de wordpress.](imagenes/imagen55.png)
 ![Captura de la instalacion de wordpress.](imagenes/imagen555.png)
@@ -201,6 +202,7 @@ sudo mariadb wordpress -e "SHOW TABLES;"
 La práctica indica que deberían verse unas 12 tablas, cuyos nombres empiezan por `wp_`. Entre ellas, `wp_posts` guarda entradas y páginas, `wp_users` los usuarios y `wp_options` la configuración. WordPress guarda los ficheros del sitio en `/var/www/html/`; la conexión está en `/var/www/html/wp-config.php` (contiene una contraseña, no lo compartas); temas, plugins e imágenes están bajo `/var/www/html/wp-content/`; entradas, usuarios y ajustes están en MariaDB.
 
 **Capturas:**
+
 ![Captura de la instalacion de wordpress.](imagenes/imagen6.png)
 ![Captura de la instalacion de wordpress.](imagenes/imagen66.png)
 ![Captura de la instalacion de wordpress.](imagenes/imagen666.png)
@@ -232,6 +234,7 @@ php -l /var/www/html/wp-config.php
 
 
 **Capturas:**
+
 ![Captura de la instalacion de wordpress.](imagenes/imagen7.png)
 ![Captura de la instalacion de wordpress.](imagenes/imagen77.png)
 
@@ -279,6 +282,7 @@ En el panel, abre **Medios → Añadir nuevo** y comprueba el tamaño máximo in
 
 
 **Capturas:** 
+
 ![Captura de la instalacion de wordpress.](imagenes/imagen8.png)
 ![Captura de la instalacion de wordpress.](imagenes/imagen88.png)
 
@@ -305,6 +309,7 @@ Recarga la web y comprueba si se recuperó. Si aparece el error, la guía propon
 
 
 **Capturas:**
+
 ![Captura de la instalacion de wordpress.](imagenes/imagen9.png)
 ![Captura de la instalacion de wordpress.](imagenes/imagen99.png)
 
@@ -345,6 +350,7 @@ Completa la tabla únicamente con resultados verificados en tu servidor:
 Antes de terminar, crea una nueva instantánea (snapshot) de la máquina virtual.
 
 **Capturas:**
+
 ![Captura de la instalacion de wordpress.](imagenes/imagen10.png)
 
 ## Conclusiones y problemas encontrados

@@ -230,8 +230,6 @@ Guarda con `Ctrl+O`, confirma con Enter y sal con `Ctrl+X`. Comprueba la sintaxi
 php -l /var/www/html/wp-config.php
 ```
 
-**Salida esperada (ejemplo orientativo):** `No syntax errors detected in /var/www/html/wp-config.php`. Verifica el resultado y la web en tus capturas. Esta solución es para el laboratorio; en un servidor real se usaría una dirección fija.
-
 
 **Capturas:**
 ![Captura de la instalacion de wordpress.](imagenes/imagen7.png)

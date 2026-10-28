@@ -159,7 +159,7 @@ ls -ld /var/www/html
 
 ## 5. Terminar la instalación desde el navegador
 
-Abre `http://IP_DEL_SERVIDOR` (o `http://localhost:8080` si usas el túnel). Sigue el asistente:
+Abre `http://IP_DEL_SERVIDOR`. Sigue el asistente:
 
 1. Elige el idioma y pulsa **Continuar**.
 2. En la bienvenida, pulsa **¡Vamos a ello!**.

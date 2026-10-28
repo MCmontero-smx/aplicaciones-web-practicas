@@ -59,7 +59,6 @@ ls /etc/apache2/sites-enabled/
 grep DocumentRoot /etc/apache2/sites-enabled/000-default.conf
 ```
 
-**Salida esperada (ejemplo orientativo):** solo `000-default.conf` en la primera salida; `DocumentRoot /var/www/html` en la segunda. Abre `http://IP_DEL_SERVIDOR` en el navegador: debe mostrarse la página de bienvenida de Apache o el contenido que ya tenías en esa carpeta.
 
 **Reflexión:** ¿Qué diferencia hay entre desactivar un sitio con `a2dissite` y borrar sus ficheros? ¿Por qué ahora ves la página por defecto de Apache y antes veías sitio1?
 
@@ -353,6 +352,6 @@ Antes de terminar, crea una nueva instantánea (snapshot) de la máquina virtual
 
 ![Captura de la instalacion de wordpress.](imagenes/imagen10.png)
 
-## Conclusiones y problemas encontrados
+## Conclusiones 
 
 **Conclusiones:** En esta práctica he instalado WordPress en un servidor Ubuntu 24.04 con Apache, PHP y MariaDB. He aprendido a administrar el servidor mediante SSH y a completar la instalación desde el navegador, sin que el servidor necesite una interfaz gráfica. También he comprobado que WordPress guarda las entradas y la configuración en una base de datos MariaDB, mientras que sus archivos se encuentran en el directorio web. Por último, he configurado los enlaces permanentes y el tamaño máximo de subida, y he observado que WordPress necesita que MariaDB esté activo para mostrar la web.

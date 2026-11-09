@@ -165,7 +165,7 @@ Abre `http://IP_DEL_SERVIDOR`. Sigue el asistente:
 3. En los datos de base de datos, indica:
    - Base de datos: `wordpress`
    - Usuario: `wp_user`
-   - Contraseña: la que elegiste en el apartado 3 (no la copies en la memoria)
+   - Contraseña: la que elegiste en el apartado 3 
    - Servidor: `localhost`
    - Prefijo: `wp_`
 4. Pulsa **Enviar** y luego **Iniciar la instalación** cuando confirme que todo está en orden.
@@ -174,7 +174,7 @@ Abre `http://IP_DEL_SERVIDOR`. Sigue el asistente:
 
 WordPress comprueba el acceso a la base de datos y crea `wp-config.php`; luego crea las tablas y el usuario administrador. Inicia sesión y comprueba que aparece el escritorio.
 
-**Mis datos no sensibles:** Título [completar] · Usuario administrador [completar] · Correo [completar].  
+ 
 
 
 **Capturas:**
